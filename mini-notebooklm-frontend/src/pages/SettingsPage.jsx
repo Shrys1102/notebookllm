@@ -4,6 +4,7 @@ import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useSettings } from "../context/SettingsContext.jsx";
+import { SHORTCUT_CATALOG } from "../hooks/useKeyboardShortcuts.js";
 import { AUTH_STORAGE_KEY, CHAT_DRAFT_KEY, SESSION_STORAGE_KEY, SETTINGS_STORAGE_KEY } from "../utils/constants.js";
 
 export default function SettingsPage() {
@@ -49,6 +50,22 @@ export default function SettingsPage() {
             <Button variant="secondary" onClick={resetSettings}><RotateCcw size={16} /> Reset settings</Button>
             <Button variant="danger" onClick={clearSavedData}><Trash2 size={16} /> Clear saved data</Button>
           </div>
+          <p className="muted">
+            Notes, saved evidence, bookmarks, and recent documents are stored locally in your browser
+            (namespaced per user) and are not synced to the server.
+          </p>
+        </Card>
+
+        <Card title="Keyboard shortcuts">
+          <div className="shortcutList">
+            {SHORTCUT_CATALOG.map((item) => (
+              <div key={item.keys + item.description} className="shortcutRow">
+                <kbd className="shortcutKeys">{item.keys}</kbd>
+                <span className="shortcutDesc">{item.description}</span>
+              </div>
+            ))}
+          </div>
+          <p className="muted">Shortcuts do not fire while typing in inputs, except Escape and modifier combos.</p>
         </Card>
       </div>
     </main>

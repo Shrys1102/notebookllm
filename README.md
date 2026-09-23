@@ -36,11 +36,27 @@ cp .env.example .env     # macOS/Linux
 
 ### 5. Run the server
 ```bash
-python main.py
+python main_new.py
+```
+Or use the provided batch script:
+```bash
+run.bat
 ```
 
 Server starts at: **http://localhost:5000**
 Interactive API docs: **http://localhost:5000/docs**
+
+> **Note:** All endpoints require an `X-User-Profile` header (your username)
+> for per-user document isolation. The frontend sends this automatically
+> after login.
+
+### 6. (Optional) Run the frontend
+```bash
+cd mini-notebooklm-frontend
+npm install
+npm run dev
+```
+Frontend starts at: **http://localhost:5173**
 
 ---
 
@@ -48,14 +64,19 @@ Interactive API docs: **http://localhost:5000/docs**
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/health` | Server status check |
-| `POST` | `/upload` | Upload a document (PDF/TXT/DOCX) |
-| `POST` | `/ask` | Ask a question about your docs |
-| `POST` | `/summarize` | Summarize uploaded document(s) |
-| `GET` | `/files` | List all uploaded files |
-| `DELETE` | `/files/{name}` | Delete an uploaded file |
+| `GET` | `/health` | Server status check *(requires `X-User-Profile` header)* |
+| `POST` | `/upload` | Upload a document (PDF/TXT/DOCX/PPTX) *(requires header)* |
+| `POST` | `/ask` | Ask a question about your docs *(requires header)* |
+| `POST` | `/summarize` | Summarize uploaded document(s) *(requires header)* |
+| `GET` | `/files` | List all uploaded files *(requires header)* |
+| `DELETE` | `/files/{name}` | Delete an uploaded file *(requires header)* |
 | `GET` | `/session/{id}` | Get chat history for a session |
 | `DELETE` | `/session/{id}` | Clear session history |
+| `POST` | `/voice-overview` | Generate a spoken audio overview *(requires header)* |
+| `POST` | `/concept-map` | Generate a concept map from documents *(requires header)* |
+| `POST` | `/youtube-videos` | Find YouTube videos related to your docs *(requires header)* |
+| `POST` | `/register` | Register a new user |
+| `POST` | `/login` | Login an existing user |
 
 ---
 
@@ -63,12 +84,21 @@ Interactive API docs: **http://localhost:5000/docs**
 
 ```
 mini-notebooklm/
-├── main.py              # Entire backend (single file)
-├── requirements.txt     # Python dependencies
-├── .env.example         # Environment variable template
-├── .env                 # Your local config (not committed)
-├── uploads/             # Auto-created: uploaded files
-└── chroma_db/           # Auto-created: vector database
+├── main_new.py            # Backend (FastAPI + RAG + ChromaDB)
+├── requirements.txt       # Python dependencies
+├── .env.example           # Environment variable template
+├── .env                   # Your local config (not committed)
+├── run.bat                # Windows start script
+├── test_api.py            # API smoke tests
+├── users.json             # User credentials (bcrypt hashes)
+├── uploads/               # Auto-created: uploaded files (per-user)
+├── chroma_db/             # Auto-created: vector database
+├── voice_overviews/       # Auto-created: generated audio overviews
+├── render.yaml            # Deploy config (Render.com)
+└── mini-notebooklm-frontend/  # React + Vite frontend
+    ├── package.json
+    ├── vite.config.js
+    └── src/
 ```
 
 ---
@@ -79,10 +109,13 @@ mini-notebooklm/
 |----------|---------|-------------|
 | `LLM_PROVIDER` | `gemini` | `gemini` or `openai` |
 | `GEMINI_API_KEY` | — | Your Google Gemini API key |
-| `OPENAI_API_KEY` | — | Your OpenAI API key |
-| `EMBEDDING_MODEL` | `all-MiniLM-L6-v2` | HuggingFace embedding model |
+| `GEMINI_MODEL` | `gemini-2.5-flash` | Gemini model to use |
+| `OPENAI_API_KEY` | — | Your OpenAI API key (if `LLM_PROVIDER=openai`) |
+| `YOUTUBE_API_KEY` | — | YouTube Data API v3 key |
+| `EMBEDDING_MODEL` | `all-MiniLM-L6-v2` | HuggingFace embedding model (runs locally) |
 | `CHUNK_SIZE` | `800` | Characters per text chunk |
 | `CHUNK_OVERLAP` | `100` | Overlap between chunks |
-| `TOP_K_CHUNKS` | `5` | Chunks retrieved per query |
+| `TOP_K_CHUNKS` | `8` | Chunks retrieved per query |
 | `MAX_HISTORY` | `10` | Max messages kept per session |
+| `LLM_MAX_OUTPUT_TOKENS` | `3072` | Max output tokens for LLM |
 | `PORT` | `5000` | Server port |

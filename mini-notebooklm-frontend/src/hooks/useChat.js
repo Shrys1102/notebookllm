@@ -5,14 +5,27 @@ import { api } from "../services/api.js";
 import { CHAT_DRAFT_KEY, SESSION_STORAGE_KEY } from "../utils/constants.js";
 import { makeSessionId, normalizeError } from "../utils/formatters.js";
 
-function toUiMessages(messages = []) {
-  return messages.map((message) => ({
+// Message status model: "completed" today. Future streaming phases map onto
+// thinking → retrieving → reading sources → generating → completed | error
+// without redesigning the chat surface.
+function makeMessage(role, content, extra = {}) {
+  return {
     id: crypto.randomUUID(),
-    role: message.role,
-    content: message.content,
+    role,
+    content,
     sources: [],
+    status: "completed",
     createdAt: new Date().toISOString(),
-  }));
+    ...extra,
+  };
+}
+
+function toUiMessages(messages = []) {
+  return messages.map((message) =>
+    makeMessage(message.role, message.content, {
+      sources: message.sources || [],
+    })
+  );
 }
 
 export function useChat() {
@@ -53,13 +66,7 @@ export function useChat() {
       const cleanQuestion = question.trim();
       if (!cleanQuestion) return;
 
-      const userMessage = {
-        id: crypto.randomUUID(),
-        role: "user",
-        content: cleanQuestion,
-        sources: [],
-        createdAt: new Date().toISOString(),
-      };
+      const userMessage = makeMessage("user", cleanQuestion);
 
       setMessages((current) => [...current, userMessage]);
       setDraft("");
@@ -74,31 +81,63 @@ export function useChat() {
         });
         setMessages((current) => [
           ...current,
-          {
-            id: crypto.randomUUID(),
-            role: "assistant",
-            content: data.answer,
-            sources: data.sources || [],
-            createdAt: new Date().toISOString(),
-          },
+          makeMessage("assistant", data.answer, { sources: data.sources || [] }),
         ]);
       } catch (error) {
         setMessages((current) => [
           ...current,
-          {
-            id: crypto.randomUUID(),
-            role: "assistant",
-            content: normalizeError(error),
-            sources: [],
-            createdAt: new Date().toISOString(),
-            isError: true,
-          },
+          makeMessage("assistant", normalizeError(error), { isError: true }),
         ]);
       } finally {
         setAsking(false);
       }
     },
     [sessionId]
+  );
+
+  const regenerateResponse = useCallback(
+    async (assistantMessageId, fileName = null) => {
+      if (asking) return;
+
+      const targetIdx = messages.findIndex((m) => m.id === assistantMessageId);
+      if (targetIdx === -1) return;
+
+      // Find the user message preceding this assistant response
+      let userMsg = null;
+      for (let i = targetIdx - 1; i >= 0; i--) {
+        if (messages[i].role === "user") {
+          userMsg = messages[i];
+          break;
+        }
+      }
+
+      if (!userMsg) return;
+
+      // Remove the old assistant message
+      setMessages((current) => current.filter((m) => m.id !== assistantMessageId));
+      setAsking(true);
+
+      try {
+        const data = await api.ask({
+          question: userMsg.content,
+          session_id: sessionId,
+          include_sources: true,
+          file_name: fileName,
+        });
+        setMessages((current) => [
+          ...current,
+          makeMessage("assistant", data.answer, { sources: data.sources || [] }),
+        ]);
+      } catch (error) {
+        setMessages((current) => [
+          ...current,
+          makeMessage("assistant", normalizeError(error), { isError: true }),
+        ]);
+      } finally {
+        setAsking(false);
+      }
+    },
+    [asking, messages, sessionId]
   );
 
   const clearSession = useCallback(async () => {
@@ -127,10 +166,11 @@ export function useChat() {
       historyLoading,
       setDraft,
       askQuestion,
+      regenerateResponse,
       clearSession,
       startNewSession,
       loadHistory,
     }),
-    [sessionId, messages, draft, asking, historyLoading, askQuestion, clearSession, startNewSession, loadHistory]
+    [sessionId, messages, draft, asking, historyLoading, askQuestion, regenerateResponse, clearSession, startNewSession, loadHistory]
   );
 }

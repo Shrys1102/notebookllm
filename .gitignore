@@ -9,11 +9,25 @@ venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+*.egg-info/
 
 # Local app data
 uploads/
 voice_overviews/
 chroma_db/
+users.json
+*.db
+*.sqlite3
+
+# Logs
+*.log
+server_log*.txt
+
+# Tool artifacts
+.freebuff/
+
+# AI agent / tool configuration
+.kilo/
 
 # Frontend
 mini-notebooklm-frontend/node_modules/

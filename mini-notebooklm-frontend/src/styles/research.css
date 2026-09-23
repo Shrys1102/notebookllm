@@ -1,0 +1,2483 @@
+/* ============================================================
+   PHASE 4 — RESEARCH WORKSPACE STYLES
+   Builds on the global.css token system. No new dependencies;
+   motion uses CSS transitions/keyframes with prefers-reduced-motion.
+   ============================================================ */
+
+/* ---------- Research context bar (under header) ---------- */
+.researchContextBar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 30px;
+  padding: 0 18px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--muted);
+  flex-shrink: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.researchContextScope,
+.researchContextViewing {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.researchContextScope strong,
+.researchContextViewing strong {
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+
+.researchContextLabel {
+  color: var(--muted);
+}
+
+.researchContextDivider {
+  opacity: 0.5;
+}
+
+/* ---------- Utility panel tabs (Studio | Research) ---------- */
+.utilityTabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px 0;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.utilityTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--muted);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.utilityTab:hover {
+  color: var(--text);
+  background: var(--surface-muted);
+}
+
+.utilityTab.active {
+  color: var(--primary-strong);
+  background: var(--surface-strong);
+  border-bottom-color: var(--primary);
+}
+
+.utilityTabDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.researchTabScroll {
+  background: var(--surface-strong);
+}
+
+/* ---------- Research panel ---------- */
+.researchPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.researchPanelTabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+}
+
+.researchPanelTab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+.researchPanelTab:hover {
+  color: var(--text);
+}
+
+.researchPanelTab.active {
+  background: var(--surface-strong);
+  color: var(--primary-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.researchPanelBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.researchSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.researchSectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.researchCountBadge {
+  font-size: 0.66rem;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+.researchEmptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 22px 12px;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+.researchEmptyState strong {
+  font-size: 0.84rem;
+  color: var(--text);
+}
+
+.researchEmptyState p {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  max-width: 30ch;
+}
+
+.researchLocalNotice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-size: 0.68rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ---------- Notes ---------- */
+.noteList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.noteCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  transition: border-color 0.15s ease;
+}
+
+.noteCard:hover {
+  border-color: var(--border-focus);
+}
+
+.noteCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.noteCardTitle {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.noteCardActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.noteSourceLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--primary);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: var(--primary-soft);
+  align-self: flex-start;
+  max-width: 100%;
+}
+
+.noteSourceLink span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.noteExcerpt {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  font-style: italic;
+  border-left: 3px solid var(--primary);
+  padding-left: 10px;
+}
+
+.noteBody {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.noteDate {
+  font-size: 0.64rem;
+  color: var(--muted);
+}
+
+.noteEditor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-focus);
+  box-shadow: var(--shadow-sm);
+}
+
+.noteEditorTitle {
+  padding: 8px 10px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--text);
+  outline: none;
+}
+
+.noteEditorTitle:focus,
+.noteEditorBody:focus {
+  border-color: var(--primary);
+}
+
+.noteEditorBody {
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--text);
+  outline: none;
+  resize: vertical;
+  min-height: 90px;
+}
+
+.noteEditorActions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ---------- Saved evidence ---------- */
+.savedEvidenceList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.savedEvidenceCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.savedEvidenceCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.savedEvidenceDocName {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.savedEvidenceDate {
+  font-size: 0.64rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.savedEvidenceExcerpt {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  font-style: italic;
+  border-left: 3px solid var(--primary);
+  padding-left: 10px;
+}
+
+.savedEvidenceActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Bookmarks ---------- */
+.bookmarkList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bookmarkRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bookmarkOpenBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  min-width: 0;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.bookmarkOpenBtn:hover {
+  border-color: var(--border-focus);
+  background: var(--surface-hover);
+}
+
+.bookmarkName {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.bookmarkDate {
+  font-size: 0.62rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.bookmarkOpenIcon {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ---------- Recent documents ---------- */
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.recentRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  min-width: 0;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.recentRow:hover {
+  border-color: var(--border-focus);
+  background: var(--surface-hover);
+}
+
+.recentName {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.recentDate {
+  font-size: 0.62rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.recentOpenIcon {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ---------- Sidebar recent section ---------- */
+.sidebarRecentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebarRecentHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.sidebarRecentList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebarRecentItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  min-width: 0;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.sidebarRecentItem:hover {
+  border-color: var(--border-focus);
+  background: var(--surface-hover);
+}
+
+.sidebarRecentName {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebarRecentIcon {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ---------- Document tabs ---------- */
+.docTabsBar {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 6px 14px 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+
+.docTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px 5px 10px;
+  font-size: 0.74rem;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  color: var(--muted);
+  cursor: pointer;
+  max-width: 200px;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.docTab:hover {
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+.docTab.active {
+  background: var(--surface-strong);
+  border-color: var(--border);
+  color: var(--text);
+  box-shadow: 0 -2px 8px rgba(35, 30, 25, 0.04);
+}
+
+.docTabName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.docTabEvidenceDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex-shrink: 0;
+}
+
+.docTabClose {
+  display: grid;
+  place-items: center;
+  padding: 2px;
+  border-radius: 4px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.docTabClose:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ---------- Small / large doc type icons ---------- */
+.docTypeIcon.small {
+  width: 22px;
+  height: 22px;
+  font-size: 0.54rem;
+  border-radius: 3px;
+}
+
+.docTypeIcon.lg {
+  width: 40px;
+  height: 40px;
+  font-size: 0.72rem;
+}
+
+/* ---------- Citation group (chat) ---------- */
+.citationGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.messageCitationRow {
+  margin-top: 10px;
+}
+
+/* ---------- Evidence reference (accordion cards) ---------- */
+.evidenceReference {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.evidenceReference:hover,
+.evidenceReference:focus-visible {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-sm);
+}
+
+.evidenceReferenceHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.evidenceReferenceDocInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.evidenceReferenceDocName {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.evidenceReferenceMeta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  max-width: 40%;
+  overflow: hidden;
+}
+
+.evidenceReferenceMeta .sourceChunkBadge {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evidenceReferenceExcerpt .sourceExcerptQuote {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.evidenceReferenceActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.evidenceRefAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  transition: all 0.15s ease;
+}
+
+.evidenceRefAction:hover:not(:disabled) {
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+.evidenceRefAction.saved {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.evidenceRefAction.danger:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.evidenceRefAction:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.evidenceRefOpenLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* ---------- Document viewer: state classes ---------- */
+.docViewerOverlay.focusMode {
+  background: var(--bg);
+  backdrop-filter: none;
+  padding: 0;
+}
+
+.docViewerOverlay.focusMode .docViewerContainer {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.docViewerOverlay.focusMode .docViewerHeader {
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+}
+
+.docViewerOverlay.loading .docViewerBody {
+  opacity: 0.7;
+}
+
+/* Loading state inside viewer */
+.docViewerLoadingState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.docViewerLoadingSpinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  animation: docSpin 0.8s linear infinite;
+}
+
+@keyframes docSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Focus mode exit bar */
+.docFocusExitBar {
+  position: absolute;
+  top: 62px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary);
+  z-index: 20;
+  transition: all 0.15s ease;
+}
+
+.docFocusExitBar:hover {
+  border-color: var(--primary);
+}
+
+.docFocusExitBar kbd {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+/* ---------- Navigation upgrades ---------- */
+.docNavNoPages {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  padding: 2px 6px;
+}
+
+.docNavPageInputForm {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.docNavPageInput {
+  width: 42px;
+  padding: 3px 6px;
+  font-size: 0.74rem;
+  font-family: var(--font-mono);
+  text-align: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+  outline: none;
+}
+
+.docNavPageInput:focus {
+  border-color: var(--primary);
+}
+
+.docNavPageTotal {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+}
+
+.docNavBtn.active {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+/* ---------- Search upgrades ---------- */
+.docSearchBar.disabled .docSearchInput {
+  opacity: 0.6;
+}
+
+.docSearchUnavailableText {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+}
+
+.docSearchDisabledHint {
+  font-size: 0.66rem;
+  color: var(--muted);
+  flex-basis: 100%;
+  padding-top: 4px;
+  border-top: 1px dashed var(--border);
+}
+
+.docSearchBar {
+  flex-wrap: wrap;
+}
+
+/* ---------- TextViewer upgrades ---------- */
+.textViewerPaper.fitWidth {
+  width: 100%;
+}
+
+.textViewerParagraph {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--text);
+  word-break: break-word;
+}
+
+/* ---------- Document content unavailable ---------- */
+.docContentUnavailable {
+  width: min(560px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 40px 28px;
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  border: 1px dashed var(--border);
+  color: var(--muted);
+}
+
+.docContentUnavailableIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  color: var(--muted);
+}
+
+.docContentUnavailable h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.docContentUnavailable p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  max-width: 46ch;
+}
+
+/* ---------- PDF honest state ---------- */
+.pdfHonestState {
+  width: min(620px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 36px 28px;
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+
+.pdfHonestIcon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.pdfHonestState h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.pdfHonestState p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  max-width: 52ch;
+}
+
+.pdfHonestNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: left;
+  line-height: 1.45;
+  max-width: 52ch;
+}
+
+.pdfNoCitationNote {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(620px, 100%);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1px dashed var(--border);
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+/* ---------- Document error states ---------- */
+.documentErrorState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 40px 24px;
+  color: var(--muted);
+}
+
+.documentErrorIcon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius);
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.documentErrorState.unsupported .documentErrorIcon {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.documentErrorState h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.documentErrorState p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  max-width: 52ch;
+}
+
+.documentErrorActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* ---------- Document info panel ---------- */
+.docInfoOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.docInfoPanel {
+  width: min(440px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  animation: scaleIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.docInfoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.docInfoTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.docInfoIconRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.docInfoFileName {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--text);
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.docInfoStatus {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--success);
+}
+
+.docInfoRows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.docInfoRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+}
+
+.docInfoRow dt {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.docInfoRow dd {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--text);
+  text-align: right;
+  word-break: break-all;
+}
+
+.docInfoFutureNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  font-size: 0.7rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* ---------- Evidence panel upgrades ---------- */
+.evidencePanelHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.evidenceMetaValue {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 220px;
+}
+
+.evidenceMetaDocName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evidenceNoPassage {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.evidenceArchitectureNote small {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  line-height: 1.45;
+}
+
+.evidenceActionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0 16px 12px;
+}
+
+.evidenceActionGrid .btn {
+  width: 100%;
+}
+
+.evidencePanelFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.evidencePanelFooter .btn {
+  width: 100%;
+}
+
+/* ---------- Evidence resize handle ---------- */
+.docViewerResizeHandle {
+  position: absolute;
+  left: -3px;
+  top: 0;
+  bottom: 0;
+  width: 7px;
+  cursor: col-resize;
+  z-index: 5;
+}
+
+.docViewerResizeHandle:hover,
+.docViewerResizeHandle:active {
+  background: var(--primary-glow);
+}
+
+.docViewerEvidenceSidebar {
+  position: relative;
+  flex-shrink: 0;
+  transition: width 0.12s ease;
+}
+
+/* ---------- Command palette additions ---------- */
+.commandItemRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.commandItemShortcut {
+  font-size: 0.64rem;
+  font-family: var(--font-mono);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.commandFooterSpacer {
+  flex: 1;
+}
+
+.commandFooterHint {
+  font-size: 0.66rem;
+  color: var(--muted);
+}
+
+/* ---------- Settings shortcuts ---------- */
+.shortcutList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shortcutRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+}
+
+.shortcutKeys {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.shortcutDesc {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1180px) {
+  .appShell {
+    grid-template-columns: 280px minmax(0, 1fr) 340px;
+  }
+  .appShell.sidebarCollapsed {
+    grid-template-columns: 0 minmax(0, 1fr) 340px;
+  }
+}
+
+@media (max-width: 960px) {
+  .appShell {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+  .appShell.studioCollapsed,
+  .appShell.sidebarCollapsed {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+  .appShell.sidebarCollapsed.studioCollapsed {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+  .utilityPanel {
+    display: none;
+  }
+  .docViewerEvidenceSidebar {
+    width: 300px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Document-first on mobile */
+  .appShell {
+    grid-template-columns: 1fr;
+    padding: 8px;
+    gap: 8px;
+  }
+  .appShell.sidebarCollapsed,
+  .appShell.studioCollapsed,
+  .appShell.sidebarCollapsed.studioCollapsed {
+    grid-template-columns: 1fr;
+  }
+  .sidebarPanel {
+    position: fixed;
+    inset: 56px auto auto 0;
+    bottom: 0;
+    width: min(320px, 86vw);
+    z-index: 60;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebarPanel.collapsed {
+    display: none;
+  }
+  .sidebarPanel.open {
+    display: flex;
+  }
+  .centerPanel {
+    min-height: 0;
+  }
+  .researchContextBar {
+    display: none;
+  }
+  .headerBreadcrumb,
+  .healthText {
+    display: none;
+  }
+  .appHeaderCenter {
+    max-width: none;
+    margin: 0 8px;
+  }
+
+  /* Viewer becomes document-first: evidence becomes a bottom sheet */
+  .docViewerOverlay {
+    padding: 0;
+    align-items: stretch;
+  }
+  .docViewerContainer {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+  }
+  .docViewerHeader {
+    padding: 0 10px;
+    height: 52px;
+  }
+  .docViewerTitle {
+    max-width: 180px;
+  }
+  .docScopeToggleBtn span {
+    display: none;
+  }
+  .docViewerEvidenceSidebar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100% !important;
+    max-height: 45vh;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    border-radius: var(--radius) var(--radius) 0 0;
+    box-shadow: var(--shadow-lg);
+    z-index: 25;
+    animation: sheetUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .docViewerResizeHandle {
+    display: none;
+  }
+  .docTabsBar {
+    padding: 4px 8px 0;
+  }
+  .docNavToolbar {
+    border-radius: var(--radius);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .textViewerPaper,
+  .pdfHonestState,
+  .unsupportedDocCard,
+  .docContentUnavailable {
+    padding: 18px;
+  }
+  .pdfViewerContainer,
+  .textViewerContainer,
+  .unsupportedDocContainer {
+    padding: 12px;
+  }
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ============================================================
+   MOTION SYSTEM
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Subtle entrance transitions for research surfaces */
+.noteCard,
+.savedEvidenceCard,
+.bookmarkRow,
+.recentRow,
+.evidenceReference {
+  animation: fadeIn 0.16s ease;
+}
+
+.docTab {
+  animation: fadeIn 0.14s ease;
+}
+/* ============================================================
+   PHASE 5 — RESEARCH INTELLIGENCE + KNOWLEDGE WORKSPACE
+   ============================================================ */
+
+/* ---------- Research panel topbar (7 tabs + search) ---------- */
+.researchPanelTopbar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.researchPanelTopbar .researchPanelTabs {
+  flex-wrap: wrap;
+}
+
+.researchPanelTopbar .researchPanelTab {
+  flex: 1 0 auto;
+}
+
+.researchSearchToggle {
+  align-self: flex-end;
+}
+
+.researchSearchToggle.active {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+  border-color: var(--primary-strong);
+}
+
+/* ---------- Research overview ---------- */
+.researchStatGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.researchStatBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.researchStatBox svg {
+  color: var(--primary-strong);
+}
+
+.researchStatBox strong {
+  font-size: 1.05rem;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.researchStatBox span {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.researchQuickActions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.researchQuickAction {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+.researchQuickAction:hover {
+  color: var(--primary-strong);
+  border-color: var(--primary-strong);
+}
+
+.researchOverviewSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.researchOverviewSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.researchOverviewSectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.researchOverviewMore {
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+.researchOverviewEmpty {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.researchQuestionList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.researchQuestionRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+}
+
+.researchQuestionStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  font-size: 0.6rem;
+}
+
+.researchQuestionStatus.asked {
+  background: var(--surface-strong);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.researchQuestionStatus.answered {
+  background: var(--success-soft, rgba(34, 197, 94, 0.15));
+  color: var(--success, #16a34a);
+}
+
+.researchQuestionStatus.saved {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+.researchQuestionText {
+  flex: 1;
+  font-size: 0.74rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.researchQuestionMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.researchQuestionMeta em {
+  font-style: normal;
+  font-size: 0.64rem;
+  color: var(--primary-strong);
+  background: var(--primary-soft);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.researchQuestionMeta time {
+  font-size: 0.62rem;
+  color: var(--muted);
+}
+
+.researchQuestionSave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  flex-shrink: 0;
+}
+
+.researchQuestionSave:hover {
+  color: var(--primary-strong);
+  border-color: var(--primary-strong);
+}
+
+.researchQuestionSave.saved {
+  color: var(--primary-strong);
+  background: var(--primary-soft);
+  border-color: var(--primary-strong);
+}
+
+.researchTimeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 10px;
+  border-left: 1px solid var(--border);
+}
+
+.researchTimelineItem {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 0 5px 10px;
+}
+
+.researchTimelineDot {
+  position: absolute;
+  left: -14px;
+  top: 11px;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--primary-strong);
+}
+
+.researchTimelineLabel {
+  flex: 1;
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.researchTimelineLabel strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.researchTimelineTime {
+  font-size: 0.62rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.researchOverviewRecent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.researchOverviewRecentLabel {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.researchOverviewRecentChip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--primary-strong);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-glow);
+  border-radius: var(--radius-full);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.researchOverviewRecentChip:hover {
+  border-color: var(--primary-strong);
+}
+
+/* ---------- Collections ---------- */
+.collectionCreateRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.collectionNameInput {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 9px;
+  font-size: 0.76rem;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-sm);
+}
+
+.collectionNameInput.inline {
+  flex: 1;
+}
+
+.collectionList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.collectionCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  transition: border-color 0.15s ease;
+}
+
+.collectionCard:hover {
+  border-color: var(--border-focus);
+}
+
+.collectionCard.active {
+  border-color: var(--primary-strong);
+  box-shadow: 0 0 0 1px var(--primary-glow);
+}
+
+.collectionCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.collectionNameBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--text);
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+.collectionNameBtn svg {
+  color: var(--primary-strong);
+  flex-shrink: 0;
+}
+
+.collectionNameBtn strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collectionMemberCount {
+  font-size: 0.64rem;
+  color: var(--muted);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.collectionCardActions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.collectionCardSub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.64rem;
+  color: var(--muted);
+}
+
+.collectionActiveBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+}
+
+
+.collectionActiveBtn:hover {
+  color: var(--primary-strong);
+  border-color: var(--primary-strong);
+}
+
+.collectionActiveBtn.active {
+  color: var(--primary-strong);
+  background: var(--primary-soft);
+  border-color: var(--primary-strong);
+}
+
+.collectionMembers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+
+.collectionMemberGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.collectionMemberLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.collectionMemberList {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.collectionMemberRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.collectionMemberOpen {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collectionMemberOpen:hover {
+  color: var(--primary-strong);
+  background: var(--primary-soft);
+}
+
+.collectionMemberRemove {
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.collectionMemberRemove:hover {
+  color: var(--danger, #dc2626);
+}
+
+.collectionMembersEmpty {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ---------- Collection picker (shared control) ---------- */
+.collectionPicker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.collectionPicker.right {
+  justify-content: flex-end;
+}
+
+.collectionPickerAdd,
+.collectionPickAddBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+  background: transparent;
+  transition: all 0.15s ease;
+}
+
+.collectionPickerAdd:hover,
+.collectionPickAddBtn:hover {
+  color: var(--primary-strong);
+  border-color: var(--primary-strong);
+  background: var(--primary-soft);
+}
+
+.collectionPickChip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  transition: all 0.15s ease;
+}
+
+.collectionPickChip:hover {
+  color: var(--primary-strong);
+  border-color: var(--primary-strong);
+}
+
+.collectionPickChip.active {
+  color: var(--primary-strong);
+  background: var(--primary-soft);
+  border-color: var(--primary-strong);
+}
+
+.collectionPickCreate {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.collectionPickCreate input {
+  width: 110px;
+  padding: 3px 7px;
+  font-size: 0.7rem;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-sm);
+}
+
+.collectionPickCreate button {
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+}
+
+.collectionPickCreate button:hover {
+  color: var(--primary-strong);
+}
+
+/* ---------- Insight library ---------- */
+.insightControls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.insightSearchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.insightSearchIcon {
+  position: absolute;
+  left: 8px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.insightSearchInput {
+  flex: 1;
+  width: 100%;
+  padding: 6px 26px 6px 26px;
+  font-size: 0.74rem;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.insightSearchInput:focus {
+  border-color: var(--border-focus);
+}
+
+.insightSearchClear {
+  position: absolute;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.insightSearchClear:hover {
+  color: var(--text);
+}
+
+.insightFilterSelect {
+  padding: 5px 8px;
+  font-size: 0.7rem;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.insightList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.insightCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  transition: border-color 0.15s ease;
+}
+
+.insightCard:hover {
+  border-color: var(--border-focus);
+}
+
+.insightCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.insightCardTitle {
+  font-size: 0.8rem;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.insightCardActions {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.insightEditTitle {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-sm);
+}
+
+.insightEditBody {
+  width: 100%;
+  padding: 7px 9px;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-sm);
+  resize: vertical;
+  min-height: 70px;
+}
+
+.insightCardBody {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.insightSourceRefs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.insightSourceChip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.66rem;
+  color: var(--primary-strong);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-glow);
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  max-width: 100%;
+}
+
+.insightSourceChip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 140px;
+}
+
+.insightSourceChip em {
+  font-style: normal;
+  color: var(--muted);
+}
+
+.insightSourceChip:hover {
+  border-color: var(--primary-strong);
+}
+
+.insightCardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.insightCardDate {
+  font-size: 0.62rem;
+  color: var(--muted);
+}
+
+/* ---------- Cross-entity research search ---------- */
+.researchSearchBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.researchSearchIcon {
+  position: absolute;
+  left: 9px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.researchSearchInput {
+  flex: 1;
+  width: 100%;
+  padding: 7px 30px 7px 28px;
+  font-size: 0.76rem;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-sm);
+}
+
+.researchSearchClear {
+  position: absolute;
+  right: 7px;
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.researchSearchClear:hover {
+  color: var(--text);
+}
+
+.researchSearchResults {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.researchSearchGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.researchSearchGroupLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.researchSearchResult {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.researchSearchResult:hover {
+  border-color: var(--primary-strong);
+}
+
+.researchSearchResultIcon {
+  color: var(--primary-strong);
+  flex-shrink: 0;
+}
+
+.researchSearchResultTitle {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.researchSearchResultBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.researchSearchResultSource {
+  font-style: normal;
+  font-size: 0.64rem;
+  color: var(--primary-strong);
+}
+
+.researchSearchResultExcerpt {
+  font-style: normal;
+  font-size: 0.68rem;
+  color: var(--muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.researchSearchResultOpen {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ---------- Entity surface enhancements ---------- */
+.savedEvidenceCollections {
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+}
+
+.noteCardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.messageActionButton.saved {
+  color: var(--primary-strong);
+  background: var(--primary-soft);
+}
+
+/* ---------- Source library organization ---------- */
+.sourceLibraryOrganize {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sourceOrganizeLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--muted);
+}
+
+.sourceOrganizeLabel select {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  max-width: 96px;
+}
+
+/* ---------- Source preview collection row ---------- */
+.sourceCollectionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.sourceCollectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ---------- Responsive: research panel ---------- */
+@media (max-width: 1180px) {
+  .researchStatGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------- Mobile: research/studio becomes a right drawer ---------- */
+@media (max-width: 720px) {
+  .utilityPanel.open {
+    position: fixed;
+    top: 56px;
+    right: 0;
+    bottom: 0;
+    width: min(420px, 92vw);
+    z-index: 70;
+    border-left: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    animation: drawerIn 0.18s ease;
+  }
+}
+
+@keyframes drawerIn {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
