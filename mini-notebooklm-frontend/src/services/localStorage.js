@@ -6,6 +6,8 @@
  * instead of crashing the workspace.
  */
 
+import { AUTH_STORAGE_KEY, DEMO_MODE, DEMO_USER } from "../utils/constants.js";
+
 const storage = typeof window !== "undefined" ? window.localStorage : null;
 
 export function storageGet(key, fallback = null) {
@@ -57,4 +59,66 @@ export function userStorageSet(key, username, value) {
   const fullKey = userStorageKey(key, username);
   if (!fullKey) return false;
   return storageSet(fullKey, value);
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Auth session helpers (shared between AuthContext and the API client so
+// the demo user is consistently sent as the X-User-Profile header).
+// ─────────────────────────────────────────────────────────────────────
+
+// Active tab session — managed by AuthProvider (writes here on login/demo).
+export function getSessionUser() {
+  if (typeof sessionStorage === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(AUTH_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    sessionStorage.removeItem(AUTH_STORAGE_KEY);
+    return null;
+  }
+}
+
+export function setSessionUser(user) {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    if (user) {
+      sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+    } else {
+      sessionStorage.removeItem(AUTH_STORAGE_KEY);
+    }
+  } catch {
+    // ignore
+  }
+}
+
+// Persisted store — survives browser/tab restarts (used for the demo user).
+export function getPersistedUser() {
+  return storageGet(AUTH_STORAGE_KEY);
+}
+
+export function setPersistedUser(user) {
+  if (user) {
+    storageSet(AUTH_STORAGE_KEY, user);
+  } else {
+    storageRemove(AUTH_STORAGE_KEY);
+  }
+}
+
+// The local demo identity. No password, no credential, clearly non-production.
+export function getDemoUser() {
+  return { username: DEMO_USER, isDemo: true };
+}
+
+/**
+ * Resolve the username that travels as the X-User-Profile header on every
+ * API request.
+ *   1. Active tab session (AuthProvider-managed, incl. demo session).
+ *   2. In demo mode, fall back to the stable demo user.
+ *   3. Otherwise "anonymous".
+ */
+export function resolveUsername() {
+  const sessionUser = getSessionUser();
+  if (sessionUser?.username) return sessionUser.username;
+  if (DEMO_MODE) return DEMO_USER;
+  return "anonymous";
 }

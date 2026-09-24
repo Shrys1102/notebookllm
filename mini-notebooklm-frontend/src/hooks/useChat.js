@@ -86,7 +86,7 @@ export function useChat() {
       } catch (error) {
         setMessages((current) => [
           ...current,
-          makeMessage("assistant", normalizeError(error), { isError: true }),
+          makeMessage("assistant", normalizeError(error), { isError: true, error }),
         ]);
       } finally {
         setAsking(false);
@@ -131,12 +131,12 @@ export function useChat() {
       } catch (error) {
         setMessages((current) => [
           ...current,
-          makeMessage("assistant", normalizeError(error), { isError: true }),
+          makeMessage("assistant", normalizeError(error), { isError: true, error }),
         ]);
       } finally {
         setAsking(false);
       }
-    },
+      },
     [asking, messages, sessionId]
   );
 

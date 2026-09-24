@@ -1,5 +1,6 @@
 import axios from "axios";
 import { DEFAULT_API_BASE_URL } from "../utils/constants.js";
+import { resolveUsername } from "./localStorage.js";
 
 let apiBaseUrl = localStorage.getItem("mini-notebooklm:api-base-url") || DEFAULT_API_BASE_URL;
 
@@ -13,13 +14,7 @@ export function getApiBaseUrl() {
 }
 
 function client(timeout = 150000) {
-  const userJson = sessionStorage.getItem("mini-notebooklm:user");
-  let username = "anonymous";
-  try {
-    username = userJson ? JSON.parse(userJson).username : "anonymous";
-  } catch {
-    sessionStorage.removeItem("mini-notebooklm:user");
-  }
+  const username = resolveUsername();
 
   return axios.create({
     baseURL: apiBaseUrl,

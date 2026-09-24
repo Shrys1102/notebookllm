@@ -1,11 +1,14 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./context/AuthContext.jsx";
+import { DEMO_MODE } from "./utils/constants.js";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
 import SignInPage from "./pages/SignInPage.jsx";
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
+  // In demo mode the workspace is always available — no login gate.
+  if (DEMO_MODE) return children;
   return user ? children : <Navigate to="/signin" replace />;
 }
 

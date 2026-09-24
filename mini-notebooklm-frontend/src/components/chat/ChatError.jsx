@@ -1,24 +1,36 @@
-import { AlertTriangle, RotateCw } from "lucide-react";
+import { AlertTriangle, RotateCw, WifiOff, Key, Database, Server } from "lucide-react";
+import { classifyError } from "../../utils/formatters.js";
 
-export default function ChatError({ message, onRetry }) {
-  // Format technical error messages into readable user explanations
-  let displayMessage = message;
-  if (typeof message === "string") {
-    if (message.includes("Network Error") || message.includes("ERR_CONNECTION_REFUSED")) {
-      displayMessage = "Unable to connect to the backend server. Please verify the Python service is running.";
-    } else if (message.includes("404")) {
-      displayMessage = "The requested session or document could not be found.";
-    } else if (message.includes("500") || message.includes("Internal Server Error")) {
-      displayMessage = "The reasoning engine encountered an unexpected issue while querying the vector index.";
-    }
-  }
+export default function ChatError({ message, error, onRetry }) {
+  const classification = error ? classifyError(error) : classifyError(null);
+  const { category, message: classifiedMessage } = classification;
+  const displayMessage = classifiedMessage || message || "An error occurred while generating the answer.";
+
+  const iconMap = {
+    connection: WifiOff,
+    llm: Key,
+    retrieval: Database,
+    api: Server,
+    auth: AlertTriangle,
+    unknown: AlertTriangle,
+  };
+  const Icon = iconMap[category] || AlertTriangle;
+
+  const categoryLabel = {
+    connection: "Backend Unavailable",
+    llm: "LLM Not Configured",
+    retrieval: "Retrieval Failure",
+    api: "Backend Error",
+    auth: "Authentication Error",
+    unknown: "Unexpected Error",
+  };
 
   return (
     <div className="chatErrorCard" role="alert">
       <div className="chatErrorHeader">
         <div className="chatErrorTitle">
-          <AlertTriangle size={16} className="textDanger" />
-          <strong>Analysis interrupted</strong>
+          <Icon size={16} className="textDanger" />
+          <strong>{categoryLabel[category] || "Analysis interrupted"}</strong>
         </div>
         {onRetry && (
           <button
@@ -32,7 +44,7 @@ export default function ChatError({ message, onRetry }) {
           </button>
         )}
       </div>
-      <p className="chatErrorMessage">{displayMessage || "An error occurred while generating the answer."}</p>
+      <p className="chatErrorMessage">{displayMessage}</p>
     </div>
   );
 }

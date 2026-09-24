@@ -1,6 +1,13 @@
 import { createContext, useContext, useState } from "react";
-import { AUTH_STORAGE_KEY } from "../utils/constants.js";
+import { DEMO_MODE } from "../utils/constants.js";
 import { api } from "../services/api.js";
+import {
+  getSessionUser,
+  setSessionUser,
+  getPersistedUser,
+  setPersistedUser,
+  getDemoUser,
+} from "../services/localStorage.js";
 
 const AuthContext = createContext(null);
 
@@ -15,28 +22,35 @@ function shouldFallbackToLocalAuth(err) {
   return err?.response?.status === 404;
 }
 
+// Initialise the auth session.
+//   - Demo mode: auto-provision a stable demo-user, persisted so it survives
+//     browser restarts, and mirrored into the active tab session for API use.
+//   - Normal mode: restore whatever was left in the active tab session.
+function getInitialUser() {
+  if (DEMO_MODE) {
+    const demoUser = getPersistedUser() || getDemoUser();
+    setSessionUser(demoUser);
+    setPersistedUser(demoUser);
+    return demoUser;
+  }
+  return getSessionUser();
+}
+
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    try {
-      const saved = sessionStorage.getItem(AUTH_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState(() => getInitialUser());
 
   const register = async (username, password) => {
     try {
       const data = await api.register({ username, password });
       const userData = { username: data.username };
       setUser(userData);
-      sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(userData));
+      setSessionUser(userData);
       return { success: true };
     } catch (err) {
       if (shouldFallbackToLocalAuth(err)) {
         const userData = { username: username.trim() };
         setUser(userData);
-        sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(userData));
+        setSessionUser(userData);
         return { success: true };
       }
       const msg = getAuthErrorMessage(err, "Registration failed.");
@@ -49,13 +63,13 @@ export function AuthProvider({ children }) {
       const data = await api.login({ username, password });
       const userData = { username: data.username };
       setUser(userData);
-      sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(userData));
+      setSessionUser(userData);
       return { success: true };
     } catch (err) {
       if (shouldFallbackToLocalAuth(err)) {
         const userData = { username: username.trim() };
         setUser(userData);
-        sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(userData));
+        setSessionUser(userData);
         return { success: true };
       }
       const msg = getAuthErrorMessage(err, "Login failed.");
@@ -64,8 +78,18 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => {
+    if (DEMO_MODE) {
+      // There is no signed-out state in demo mode; reset to the demo session
+      // so the workspace stays live instead of falling back to the login page.
+      const demoUser = getDemoUser();
+      setUser(demoUser);
+      setSessionUser(demoUser);
+      setPersistedUser(demoUser);
+      return;
+    }
     setUser(null);
-    sessionStorage.removeItem(AUTH_STORAGE_KEY);
+    setSessionUser(null);
+    setPersistedUser(null);
   };
 
   return (

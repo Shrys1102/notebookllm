@@ -20,15 +20,87 @@ export function getFileExtension(fileName = "") {
   return match ? match[0].toLowerCase() : "";
 }
 
-export function normalizeError(error) {
-  const detail = error?.response?.data?.detail;
-  if (typeof detail === "string") return detail;
-  if (Array.isArray(detail)) return detail.map((item) => item.msg).join(", ");
-  if (error?.code === "ECONNABORTED") return "The request timed out. The backend may still be working.";
-  if (error?.message === "Network Error") {
-    return "Cannot reach the backend. Check the API URL, server status, and CORS.";
+/**
+ * Classify an axios error into a structured object so the UI can display
+ * accurate, actionable messages instead of a generic "Cannot reach the backend".
+ *
+ * Error categories:
+ *  - "connection":  Backend cannot be reached (network-level failure).
+ *  - "api":         Backend responded with a 4xx/5xx status code.
+ *  - "llm":         Backend reached but LLM provider rejected the request
+ *                   (typically an API-key or quota problem).
+ *  - "retrieval":   ChromaDB / embedding / vector-store failure.
+ *  - "unknown":     Everything else.
+ */
+export function classifyError(error) {
+  if (!error) return { category: "unknown", message: "Something went wrong." };
+
+  // Network-level failure: server unreachable, CORS blocked, DNS, etc.
+  if (error.code === "ECONNABORTED") {
+    return { category: "connection", message: "The request timed out. The backend may still be working." };
   }
-  return error?.message || "Something went wrong.";
+  if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
+    return {
+      category: "connection",
+      message: "Backend unavailable. Start the FastAPI server on http://localhost:5000.",
+    };
+  }
+
+  // The backend responded with a non-2xx status.
+  const status = error.response?.status;
+  const detail = error.response?.data?.detail;
+  const detailStr = typeof detail === "string" ? detail : Array.isArray(detail) ? detail.map((i) => i.msg).join(", ") : null;
+
+  if (status === 401 || status === 403) {
+    return { category: "auth", message: "Authentication failed. Please sign in again." };
+  }
+  if (status === 404) {
+    return { category: "api", message: "The requested resource was not found." };
+  }
+  if (status === 422) {
+    return { category: "api", message: detailStr || "The request was invalid." };
+  }
+
+  // 503 from the backend — explicit LLM configuration problem.
+  if (status === 503) {
+    const msg = detailStr || "LLM service is not configured or the API key is invalid.";
+    return { category: "llm", message: msg };
+  }
+
+  // 502 — upstream LLM provider error.
+  if (status === 502) {
+    const msg = detailStr || "LLM provider returned an error.";
+    if (msg.includes("API key not valid") || msg.toLowerCase().includes("api key")) {
+      return { category: "llm", message: "LLM service is not configured. Set a valid GEMINI_API_KEY or OPENAI_API_KEY in .env." };
+    }
+    return { category: "llm", message: msg };
+  }
+
+  // 500 — generic server error, inspect detail for retrieval vs LLM issues.
+  if (status === 500) {
+    if (detailStr) {
+      const lower = detailStr.toLowerCase();
+      if (lower.includes("embed") || lower.includes("chroma") || lower.includes("retrieval") || lower.includes("vector")) {
+        return { category: "retrieval", message: "Unable to retrieve relevant sources from the vector index." };
+      }
+      if (lower.includes("api key") || lower.includes("gemini") || lower.includes("openai") || lower.includes("llm")) {
+        return {
+          category: "llm",
+          message: "LLM service is not configured or the API key is invalid. Set GEMINI_API_KEY in .env.",
+        };
+      }
+      return { category: "api", message: detailStr };
+    }
+    return { category: "api", message: "Backend returned an internal error (500)." };
+  }
+
+  // Fallback: use detail or raw message.
+  if (detailStr) return { category: "api", message: detailStr };
+  return { category: "unknown", message: error.message || "Something went wrong." };
+}
+
+export function normalizeError(error) {
+  return classifyError(error).message;
 }
 
 export function makeSessionId(username = "guest") {

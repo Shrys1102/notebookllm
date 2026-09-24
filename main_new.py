@@ -111,6 +111,23 @@ PORT = int(os.getenv("PORT", "5000"))
 ALLOWED_EXTENSIONS = {".pdf", ".txt", ".docx", ".pptx"}
 
 # ─────────────────────────────────────────────
+# CORS — explicit origins (spec requires specific origins when
+# allow_credentials=True; "*" is rejected by browsers for credentialed
+# requests). Dev origins first, production can be overridden via
+# ALLOWED_ORIGINS env var (comma-separated list).
+# ─────────────────────────────────────────────
+_env_origins = os.getenv("ALLOWED_ORIGINS", "").strip()
+if _env_origins:
+    _cors_origins = [o.strip() for o in _env_origins.split(",") if o.strip()]
+else:
+    _cors_origins = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+
+# ─────────────────────────────────────────────
 # APP INIT
 # ─────────────────────────────────────────────
 
@@ -124,10 +141,11 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # ─────────────────────────────────────────────
@@ -269,11 +287,24 @@ def get_retriever(k: int = TOP_K_CHUNKS, file_name: Optional[str] = None, user_i
 # LLM CALLER - Gemini + OpenAI
 # ─────────────────────────────────────────────
 
+_PLACEHOLDER_KEYS = {
+    "your-gemini-api-key-here",
+    "your-openai-api-key-here",
+    "your-youtube-api-key-here",
+}
+
+def _is_placeholder_key(key: str) -> bool:
+    return key is None or not key.strip() or key.strip().lower() in _PLACEHOLDER_KEYS
+
+
 def call_llm(prompt: str) -> str:
     """Send prompt to LLM and return response. Raises HTTPException on failure."""
     if LLM_PROVIDER == "openai":
-        if not OPENAI_API_KEY:
-            raise HTTPException(status_code=500, detail="OPENAI_API_KEY not set in .env")
+        if not OPENAI_API_KEY or _is_placeholder_key(OPENAI_API_KEY):
+            raise HTTPException(
+                status_code=503,
+                detail="LLM service is not configured. Set OPENAI_API_KEY to a valid key in .env.",
+            )
         try:
             from openai import OpenAI
             client = OpenAI(api_key=OPENAI_API_KEY)
@@ -286,11 +317,14 @@ def call_llm(prompt: str) -> str:
             return response.choices[0].message.content.strip()
         except Exception as e:
             logger.error(f"OpenAI API error: {e}")
-            raise HTTPException(status_code=500, detail=f"OpenAI API error: {str(e)}")
+            raise HTTPException(status_code=502, detail=f"OpenAI API error: {str(e)}")
 
     elif LLM_PROVIDER == "gemini":
-        if not GEMINI_API_KEY:
-            raise HTTPException(status_code=500, detail="GEMINI_API_KEY not set in .env")
+        if not GEMINI_API_KEY or _is_placeholder_key(GEMINI_API_KEY):
+            raise HTTPException(
+                status_code=503,
+                detail="LLM service is not configured. Set GEMINI_API_KEY to a valid key in .env.",
+            )
         try:
             response = requests.post(
                 f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent",
@@ -312,23 +346,30 @@ def call_llm(prompt: str) -> str:
                 },
                 timeout=45,
             )
+            if response.status_code == 401 or response.status_code == 403:
+                raise HTTPException(
+                    status_code=503,
+                    detail="LLM service authentication failed. Check that GEMINI_API_KEY is valid in .env.",
+                )
             response.raise_for_status()
             data = response.json()
             parts = data.get("candidates", [{}])[0].get("content", {}).get("parts", [])
             text = "".join(part.get("text", "") for part in parts).strip()
             if not text:
-                raise ValueError("Gemini returned an empty response.")
+                raise HTTPException(status_code=502, detail="LLM returned an empty response.")
             return text
         except requests.HTTPError as e:
             detail = e.response.text if e.response is not None else str(e)
             logger.error(f"Gemini API error: {detail}")
-            raise HTTPException(status_code=500, detail=f"Gemini API error: {detail}")
+            raise HTTPException(status_code=502, detail=f"Gemini API error: {detail}")
+        except HTTPException:
+            raise
         except Exception as e:
             logger.error(f"Gemini API error: {e}")
-            raise HTTPException(status_code=500, detail=f"Gemini API error: {str(e)}")
+            raise HTTPException(status_code=502, detail=f"Gemini API error: {str(e)}")
 
     else:
-        raise HTTPException(status_code=500, detail=f"Unknown LLM_PROVIDER: '{LLM_PROVIDER}'. Set to 'gemini' or 'openai' in .env")
+        raise HTTPException(status_code=500, detail=f"Unknown LLM_PROVIDER: '{LLM_PROVIDER}'. Set to 'gemini' or 'openai' in .env.")
 
 # ─────────────────────────────────────────────
 # TEXT EXTRACTION
