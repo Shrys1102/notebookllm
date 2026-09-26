@@ -2,7 +2,13 @@ import axios from "axios";
 import { DEFAULT_API_BASE_URL } from "../utils/constants.js";
 import { resolveUsername } from "./localStorage.js";
 
-let apiBaseUrl = localStorage.getItem("mini-notebooklm:api-base-url") || DEFAULT_API_BASE_URL;
+// Vite statically replaces import.meta.env.VITE_API_BASE_URL at build time.
+// In production this is always set (e.g. the Render URL) and must take
+// priority over any stale localStorage value left from a prior dev session.
+// In development (undefined), localStorage is honoured so the user can
+// point at a different backend via Settings.
+const ENV_API_URL = import.meta.env.VITE_API_BASE_URL || "";
+let apiBaseUrl = ENV_API_URL || localStorage.getItem("mini-notebooklm:api-base-url") || DEFAULT_API_BASE_URL;
 
 export function setApiBaseUrl(url) {
   apiBaseUrl = url || DEFAULT_API_BASE_URL;

@@ -1,3 +1,5 @@
+import { DEFAULT_API_BASE_URL } from "./constants.js";
+
 export function formatBytes(bytes = 0) {
   if (!bytes) return "0 B";
   const units = ["B", "KB", "MB", "GB"];
@@ -42,7 +44,7 @@ export function classifyError(error) {
   if (error.message === "Network Error" || error.code === "ERR_NETWORK") {
     return {
       category: "connection",
-      message: "Backend unavailable. Start the FastAPI server on http://localhost:5000.",
+       message: `Backend unavailable (${DEFAULT_API_BASE_URL}). Please check your connection and try again later.`,
     };
   }
 

@@ -5,7 +5,7 @@ import Card from "../components/ui/Card.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useSettings } from "../context/SettingsContext.jsx";
 import { SHORTCUT_CATALOG } from "../hooks/useKeyboardShortcuts.js";
-import { AUTH_STORAGE_KEY, CHAT_DRAFT_KEY, SESSION_STORAGE_KEY, SETTINGS_STORAGE_KEY } from "../utils/constants.js";
+import { AUTH_STORAGE_KEY, CHAT_DRAFT_KEY, DEFAULT_API_BASE_URL, SESSION_STORAGE_KEY, SETTINGS_STORAGE_KEY } from "../utils/constants.js";
 
 export default function SettingsPage() {
   const { settings, updateSettings, resetSettings } = useSettings();
@@ -31,7 +31,7 @@ export default function SettingsPage() {
             API base URL
             <input value={settings.apiBaseUrl} onChange={(event) => updateSettings({ apiBaseUrl: event.target.value })} />
           </label>
-          <p className="muted">Default: http://localhost:5000</p>
+          <p className="muted">Default: {DEFAULT_API_BASE_URL}</p>
         </Card>
 
         <Card title="Appearance">

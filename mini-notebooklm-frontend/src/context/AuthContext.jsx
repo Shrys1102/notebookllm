@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { DEMO_MODE } from "../utils/constants.js";
+import { DEMO_MODE, DEFAULT_API_BASE_URL } from "../utils/constants.js";
 import { api } from "../services/api.js";
 import {
   getSessionUser,
@@ -14,7 +14,7 @@ const AuthContext = createContext(null);
 function getAuthErrorMessage(err, fallback) {
   if (err.response?.data?.detail) return err.response.data.detail;
   if (err.code === "ECONNABORTED") return "Backend request timed out. Check whether the API server is running.";
-  if (err.message === "Network Error") return "Cannot reach backend API. Start server on http://localhost:5000.";
+  if (err.message === "Network Error") return `Cannot reach backend API (${DEFAULT_API_BASE_URL}). Please check your connection and try again later.`;
   return fallback;
 }
 
