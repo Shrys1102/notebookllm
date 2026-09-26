@@ -734,11 +734,13 @@ async def clear_session(session_id: str):
 
 
 @app.get("/health", response_model=HealthResponse, summary="Server health check")
-async def health_check(x_user_profile: str = Header(..., alias="X-User-Profile")):
-    user_id = x_user_profile.strip()
-    user_dir = UPLOAD_DIR / user_id
-    user_dir.mkdir(parents=True, exist_ok=True)
-    uploaded_count = sum(1 for f in user_dir.iterdir() if f.is_file())
+async def health_check(x_user_profile: str = Header(None, alias="X-User-Profile")):
+    uploaded_count = 0
+    if x_user_profile and x_user_profile.strip():
+        user_id = x_user_profile.strip()
+        user_dir = UPLOAD_DIR / user_id
+        if user_dir.exists():
+            uploaded_count = sum(1 for f in user_dir.iterdir() if f.is_file())
     return HealthResponse(
         status="ok",
         provider=LLM_PROVIDER,

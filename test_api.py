@@ -33,11 +33,33 @@ def sep(title):
 
 
 def main():
-    # -- 0. Health check --
-    sep("0. GET /health")
+    # -- 0a. Health check WITHOUT X-User-Profile (public) --
+    sep("0a. GET /health  (no X-User-Profile header — public)")
+    r = requests.get(f"{BASE}/health", timeout=10)
+    print(f"Status : {r.status_code}")
+    print(f"Body   : {r.json()}")
+    assert r.status_code == 200, f"Expected 200, got {r.status_code}"
+
+    # -- 0b. Health check WITH X-User-Profile (user-aware) --
+    sep("0b. GET /health  (with X-User-Profile header)")
     r = requests.get(f"{BASE}/health", headers=HEADERS, timeout=10)
     print(f"Status : {r.status_code}")
     print(f"Body   : {r.json()}")
+    assert r.status_code == 200, f"Expected 200, got {r.status_code}"
+
+    # -- 0c. Protected endpoint /files WITHOUT header should fail (422) --
+    sep("0c. GET /files  (no X-User-Profile header — should be 422)")
+    r = requests.get(f"{BASE}/files", timeout=10)
+    print(f"Status : {r.status_code}")
+    print(f"Body   : {r.text[:200]}")
+    assert r.status_code == 422, f"Expected 422, got {r.status_code}"
+
+    # -- 0d. Protected endpoint /files WITH header should succeed (200) --
+    sep("0d. GET /files  (with X-User-Profile header)")
+    r = requests.get(f"{BASE}/files", headers=HEADERS, timeout=10)
+    print(f"Status : {r.status_code}")
+    print(f"Body   : {r.json()}")
+    assert r.status_code == 200, f"Expected 200, got {r.status_code}"
 
     # -- 1. Upload --
     sep("1. POST /upload - test_ml.txt")
