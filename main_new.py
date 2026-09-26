@@ -113,19 +113,26 @@ ALLOWED_EXTENSIONS = {".pdf", ".txt", ".docx", ".pptx"}
 # ─────────────────────────────────────────────
 # CORS — explicit origins (spec requires specific origins when
 # allow_credentials=True; "*" is rejected by browsers for credentialed
-# requests). Dev origins first, production can be overridden via
-# ALLOWED_ORIGINS env var (comma-separated list).
+# requests). The production Vercel origin and localhost dev origins are
+# allowed by default. Configure additional/alternative origins via:
+#   - ALLOWED_ORIGINS: comma-separated list (replaces defaults)
+#   - FRONTEND_URL: a single additional origin (e.g. a staging deploy)
 # ─────────────────────────────────────────────
 _env_origins = os.getenv("ALLOWED_ORIGINS", "").strip()
+_frontend_url = os.getenv("FRONTEND_URL", "").strip()
 if _env_origins:
     _cors_origins = [o.strip() for o in _env_origins.split(",") if o.strip()]
 else:
     _cors_origins = [
+        "https://notebookllm-weld.vercel.app",
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ]
+
+if _frontend_url and _frontend_url not in _cors_origins:
+    _cors_origins.append(_frontend_url)
 
 # ─────────────────────────────────────────────
 # APP INIT
@@ -144,7 +151,7 @@ app.add_middleware(
     allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allow_headers=["*"],
+    allow_headers=["Content-Type", "Authorization", "X-User-Profile", "Accept"],
     expose_headers=["*"],
 )
 
